@@ -225,12 +225,7 @@ def train(model, train_cfg, options):
             curAcc = 100.0 * curCorrect / len(data)
             correct += curCorrect
             accLoss += loss.detach() * len(data)
-            
-            #loss.backward()
-            # L1 norm
-            loss.backward()  # 反向传播
-            
-            
+            loss.backward()
             optimizer.step()
             scheduler.step()
 
@@ -457,7 +452,6 @@ if __name__ == "__main__":
         model.load_state_dict(checkpoint["model_dict"])
 
     # store this id to use it later when resuming
-    #id = wandb.util.generate_id()
     # start a new wandb run to track this script
     wandb.init(
         # store this id to use it later when resuming
