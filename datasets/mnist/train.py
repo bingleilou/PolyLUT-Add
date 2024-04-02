@@ -47,23 +47,6 @@ class colors:
     
     
 configs = {
-    "hdr": {
-        "hidden_layers": [256, 100, 100, 100, 100],
-        "input_bitwidth": 2,
-        "hidden_bitwidth": 2,
-        "output_bitwidth": 2,
-        "input_fanin": 6,
-        "degree": 4,
-        "hidden_fanin": 6,
-        "output_fanin": 6,
-        "weight_decay": 0,
-        "batch_size": 128,
-        "epochs": 500,
-        "learning_rate": 0.004,
-        "seed": 984237,
-        "checkpoint": None,
-    },
-    
     "hdr-add2": {
         "hidden_layers": [256, 100, 100, 100, 100],
         "input_bitwidth": 2,
