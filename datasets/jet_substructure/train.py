@@ -35,22 +35,6 @@ from dataset import JetSubstructureDataset
 from models import JetSubstructureNeqModel, JetSubstructureNeqModel_add2
 
 configs = {
-    "jsc-m-lite": {
-        "hidden_layers": [64, 32],
-        "input_bitwidth": 3,
-        "hidden_bitwidth": 3,
-        "output_bitwidth": 3,
-        "input_fanin": 4,
-        "degree": 6,
-        "hidden_fanin": 4,
-        "output_fanin": 4,
-        "weight_decay": 0,
-        "batch_size": 1024,
-        "epochs": 1000,
-        "learning_rate": 1e-3,
-        "seed": 1697,
-        "checkpoint": None,
-    },
     "jsc-m-lite-add2": {
         "hidden_layers": [64, 32],
         "input_bitwidth": 3,
@@ -65,22 +49,6 @@ configs = {
         "epochs": 1000,
         "learning_rate": 1e-3,
         "seed": 1697,
-        "checkpoint": None,
-    },
-    "jsc-xl": {
-        "hidden_layers": [128, 64, 64, 64],
-        "input_bitwidth": 7,
-        "hidden_bitwidth": 5,
-        "output_bitwidth": 5,
-        "input_fanin": 2,
-        "degree": 4, 
-        "hidden_fanin": 3,
-        "output_fanin": 3,
-        "weight_decay": 0,
-        "batch_size": 1024,
-        "epochs": 500,
-        "learning_rate": 1e-2,
-        "seed": 1234,
         "checkpoint": None,
     },
     "jsc-xl-add2": {
