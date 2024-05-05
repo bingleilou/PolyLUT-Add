@@ -3,6 +3,27 @@ PolyLUT-Add is a technique that enhances neuron connectivity by combining E base
 This project is a derivative work based on PolyLUT (https://github.com/MartaAndronic/PolyLUT) which is licensed under the Apache License 2.0.
 
 We provide this code for reproducibility purposes in the FPL24 submission, the toolflow is inherited form PolyLUT work. (Examples of Table.III are provided in this project. We'll open source whole project later.)
+
+## LUT implementation example
+```verilog
+module layer0_N0_E0 ( input [2:0] M0, output [1:0] M1 );
+    (*rom_style = "distributed" *) reg [1:0] M1r;
+        assign M1 = M1r;
+        always @ (M0) begin
+            case (M0)
+                3'b000: M1r = 2'b10;
+                3'b001: M1r = 2'b11;
+                3'b010: M1r = 2'b10;
+                3'b011: M1r = 2'b11;
+                3'b100: M1r = 2'b00;
+                3'b101: M1r = 2'b01;
+                3'b110: M1r = 2'b11;
+                3'b111: M1r = 2'b11;
+            endcase
+        end
+endmodule
+```
+
 ## Setup
 **Install Vivado Design Suite**
 Vivado 2020.1
