@@ -63,7 +63,7 @@ wandb.login()
 
 ## Citation
 This work is accepted by the International Conference on Field-Programmable Logic and Applications (FPL) 2024.
-If you think this work is useful to your project, please cite the paper 
+If you think this work is useful to your project, please cite the paper: https://arxiv.org/abs/2406.04910
 ```bibtex
 @misc{lou2024polylutadd,
       title={PolyLUT-Add: FPGA-based LUT Inference with Wide Inputs}, 
