@@ -65,10 +65,12 @@ wandb.login()
 This work is accepted by the International Conference on Field-Programmable Logic and Applications (FPL) 2024.
 If you think this work is useful to your project, please cite the paper 
 ```bibtex
-@article{lou2024polylutadd,
-  author       = {Binglei Lou, Richard Rademacher, David Boland and Philip HW Leong},
-  title        = {PolyLUT-Add: FPGA-based LUT Inference with Wide Inputs},
-  conference   = {International Conference on Field-Programmable Logic and Applications (FPL)},
-  year         = {2024}
+@misc{lou2024polylutadd,
+      title={PolyLUT-Add: FPGA-based LUT Inference with Wide Inputs}, 
+      author={Binglei Lou and Richard Rademacher and David Boland and Philip H. W. Leong},
+      year={2024},
+      eprint={2406.04910},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
 }
 ```
