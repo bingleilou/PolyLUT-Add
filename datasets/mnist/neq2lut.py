@@ -1,6 +1,6 @@
-#  This file is part of PolyLUT.
+#  This file is part of PolyLUT-Add.
 #  
-#  PolyLUT is a derivative work based on LogicNets,
+#  PolyLUT-Add is a derivative work based on PolyLUT,
 #  which is licensed under the Apache License 2.0.
 
 #  Copyright (C) 2021 Xilinx, Inc
