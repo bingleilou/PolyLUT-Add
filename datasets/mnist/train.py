@@ -1,6 +1,6 @@
-#  This file is part of PolyLUT.
+#  This file is part of PolyLUT-Add.
 #  
-#  PolyLUT is a derivative work based on LogicNets,
+#  PolyLUT-Add is a derivative work based on PolyLUT,
 #  which is licensed under the Apache License 2.0.
 
 #  Copyright (C) 2021 Xilinx, Inc
@@ -33,7 +33,6 @@ from torch.utils.data import DataLoader
 
 from torchvision import datasets, transforms
 from models import MnistNeqModel, MnistNeqModel_add2
-wide_factor=1.0
 
 class colors:
     RED = '\033[91m'
@@ -173,7 +172,6 @@ def train(model, train_cfg, options):
 
     # Configure scheduler
     steps = len(train_loader)
-    print('>>>>>>>>>>>>> steps = ',steps)
     scheduler = optim.lr_scheduler.CosineAnnealingWarmRestarts(
         optimizer, T_0=steps * 100, T_mult=1
     )
