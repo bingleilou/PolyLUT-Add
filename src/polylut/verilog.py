@@ -103,13 +103,13 @@ def generate_neuron_connection_verilog_polylayer(input_indices, input_bitwidth):
     return connection_string
 
 
-def generate_neuron_connection_verilog_adder(ensemble, input_bitwidth, neuron_offset):
+def generate_neuron_connection_verilog_adder(A, input_bitwidth, neuron_offset):
     connection_string = ""
-    for i in range(ensemble):
+    for i in range(A):
         index = i
         offset = index*input_bitwidth + neuron_offset
         for b in reversed(range(input_bitwidth)):
             connection_string += f"M0[{offset+b}]"
-            if not (i == ensemble-1 and b == 0):
+            if not (i == A-1 and b == 0):
                 connection_string += ", "
     return connection_string
