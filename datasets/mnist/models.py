@@ -128,7 +128,7 @@ class MnistNeqModel_add2(nn.Module):
                 layer_list.append(layer)
                 adder = Adder2(
                     out_features,
-                    ensemble=2,
+                    A=2,
                     input_quant=layer_list[-1].output_quant,
                     output_quant=output_quant_adder,
                     apply_input_quant=False,
@@ -184,7 +184,7 @@ class MnistNeqModel_add2(nn.Module):
                 layer_list.append(layer)
                 adder = Adder2(
                     out_features,
-                    ensemble=2,
+                    A=2,
                     input_quant=layer_list[-1].output_quant,
                     output_quant=output_quant_adder,
                     apply_input_quant=False,
@@ -236,7 +236,7 @@ class MnistNeqModel_add2(nn.Module):
                 layer_list.append(layer)
                 adder = Adder2(
                     out_features,
-                    ensemble=2,
+                    A=2,
                     input_quant=layer_list[-1].output_quant,
                     output_quant=output_quant_adder,
                     apply_input_quant=False,
