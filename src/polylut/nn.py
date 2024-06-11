@@ -1,6 +1,6 @@
-#  This file is part of PolyLUT.
+#  This file is part of PolyLUT-Add.
 #
-#  PolyLUT is a derivative work based on LogicNets,
+#  PolyLUT-Add is a derivative work based on PolyLUT,
 #  which is licensed under the Apache License 2.0.
 
 #  Copyright (C) 2021 Xilinx, Inc
@@ -231,28 +231,27 @@ class Adder2(nn.Module):
     def __init__(
         self,
         out_features: int,
-        ensemble: int,
+        A: int,
         input_quant,
         output_quant,
         apply_input_quant=True,
         apply_output_quant=True,
     ) -> None:
         super(Adder2, self).__init__()
-        self.ensemble = 2
         self.out_features = out_features
         self.input_quant = input_quant
         self.output_quant = output_quant
         self.apply_input_quant = apply_input_quant
         self.apply_output_quant = apply_output_quant
-        self.ensemble = ensemble
+        self.A = A
         self.is_lut_inference = False
         
     def gen_layer_verilog(self, module_prefix, directory, generate_bench: bool = True):
         _, input_bitwidth = self.input_quant.get_scale_factor_bits()
         _, output_bitwidth = self.output_quant.get_scale_factor_bits()
         input_bitwidth, output_bitwidth = int(input_bitwidth), int(output_bitwidth)
-        total_input_bits = self.out_features * input_bitwidth * self.ensemble
-        M0_bits = input_bitwidth * self.ensemble
+        total_input_bits = self.out_features * input_bitwidth * self.A
+        M0_bits = input_bitwidth * self.A
         total_output_bits = self.out_features * output_bitwidth
         layer_contents = f"module {module_prefix} (input [{total_input_bits-1}:0] M0, output [{total_output_bits-1}:0] M1);\n\n"
         output_offset = 0
@@ -272,10 +271,10 @@ class Adder2(nn.Module):
             with open(f"{directory}/{module_name}.v", "w") as f:
                 f.write(neuron_verilog)
             connection_string = generate_neuron_connection_verilog_adder(
-                self.ensemble, input_bitwidth, M0_bits*index
+                self.A, input_bitwidth, M0_bits*index
             )  # Generate the string which connects the synapses to this neuron
             wire_name = f"{module_name}_wire"
-            connection_line = f"wire [{self.ensemble*input_bitwidth-1}:0] {wire_name} = {{{connection_string}}};\n"
+            connection_line = f"wire [{self.A*input_bitwidth-1}:0] {wire_name} = {{{connection_string}}};\n"
             inst_line = f"{module_name} {module_name}_inst (.M0({wire_name}), .M1(M1[{output_offset+output_bitwidth-1}:{output_offset}]));\n\n"
             layer_contents += connection_line + inst_line
             output_offset += output_bitwidth
@@ -295,12 +294,12 @@ class Adder2(nn.Module):
         ) = self.neuron_truth_tables[index]
         _, input_bitwidth = self.input_quant.get_scale_factor_bits()
         _, output_bitwidth = self.output_quant.get_scale_factor_bits()
-        cat_input_bitwidth = self.ensemble * input_bitwidth
+        cat_input_bitwidth = self.A * input_bitwidth
         lut_string = ""
         num_entries = input_perm_matrix.shape[0]
         for i in range(num_entries):
             entry_str = ""
-            for idx in range(self.ensemble):
+            for idx in range(self.A):
                 val = input_perm_matrix[i, idx]
                 entry_str += self.input_quant.get_bin_str(val)
             res_str = self.output_quant.get_bin_str(bin_output_states[i])
@@ -321,7 +320,7 @@ class Adder2(nn.Module):
         input_perm_matrix: Tensor,
         bin_output_states: Tensor,
     ) -> Tensor:
-        fan_in_size = self.ensemble
+        fan_in_size = self.A
         ci_bcast = connected_input.unsqueeze(2).cuda()  # Reshape to B x Fan-in x 1
         pm_bcast = (
             input_perm_matrix.t().unsqueeze(0).cuda()
@@ -420,8 +419,8 @@ class Adder2(nn.Module):
             neuron_truth_tables = list()
 
             # Retrieve the possible state space of the current neuron
-            connected_state_space = [input_state_space[0] for i in range(self.ensemble)]
-            bin_connected_state_space = [bin_state_space[0] for i in range(self.ensemble)]
+            connected_state_space = [input_state_space[0] for i in range(self.A)]
+            bin_connected_state_space = [bin_state_space[0] for i in range(self.A)]
             # Generate a matrix containing all possible input states
             input_permutation_matrix = generate_permutation_matrix_adder(
                 connected_state_space
@@ -525,7 +524,7 @@ class SparseLinearNeq_add2(nn.Module):
         self.apply_input_quant = apply_input_quant
         self.apply_output_quant = apply_output_quant
         
-        self.ensemble = int(2)
+        self.A = int(2)
 
     # TODO: Move the verilog string templates to elsewhere
     # TODO: Move this to another class
@@ -535,7 +534,7 @@ class SparseLinearNeq_add2(nn.Module):
         _, output_bitwidth = self.output_quant.get_scale_factor_bits()
         input_bitwidth, output_bitwidth = int(input_bitwidth), int(output_bitwidth)
         total_input_bits = self.in_features * input_bitwidth
-        total_output_bits = self.out_features * output_bitwidth *self.ensemble
+        total_output_bits = self.out_features * output_bitwidth *self.A
         layer_contents = f"module {module_prefix} (input [{total_input_bits-1}:0] M0, output [{total_output_bits-1}:0] M1);\n\n"
         output_offset = 0
         
@@ -543,20 +542,20 @@ class SparseLinearNeq_add2(nn.Module):
         output_offset = 0
         
         for index in tqdm(range(self.out_features), desc='gen_neuron_verilog'):
-            for ensemble_idx in range(self.ensemble):
-                module_name = f"{module_prefix}_N{index}_E{ensemble_idx}"
+            for A_idx in range(self.A):
+                module_name = f"{module_prefix}_N{index}_E{A_idx}"
                 indices, _, _, _, _, _ = self.neuron_truth_tables[index]
                 neuron_verilog = self.gen_neuron_verilog(
-                    index, module_name, ensemble_idx
+                    index, module_name, A_idx
                 )  # Generate the contents of the neuron verilog
                 with open(f"{directory}/{module_name}.v", "w") as f:
                     f.write(neuron_verilog)
                 connection_string = generate_neuron_connection_verilog_polylayer(
-                    indices[self.fan_in*ensemble_idx : self.fan_in*(ensemble_idx+1)], 
+                    indices[self.fan_in*A_idx : self.fan_in*(A_idx+1)], 
                     input_bitwidth,
                 )  # Generate the string which connects the synapses to this neuron
                 wire_name = f"{module_name}_wire"
-                connection_line = f"wire [{(len(indices)//self.ensemble)*input_bitwidth-1}:0] {wire_name} = {{{connection_string}}};\n"
+                connection_line = f"wire [{(len(indices)//self.A)*input_bitwidth-1}:0] {wire_name} = {{{connection_string}}};\n"
                 inst_line = f"{module_name} {module_name}_inst (.M0({wire_name}), .M1(M1[{output_offset+output_bitwidth-1}:{output_offset}]));\n\n"
                 layer_contents += connection_line + inst_line
                 output_offset += output_bitwidth
@@ -567,7 +566,7 @@ class SparseLinearNeq_add2(nn.Module):
 
     # TODO: Move the verilog string templates to elsewhere
     # TODO: Move this to another class
-    def gen_neuron_verilog(self, index, module_name, ensemble_idx):
+    def gen_neuron_verilog(self, index, module_name, A_idx):
         (
             indices,
             input_perm_matrix,
@@ -578,13 +577,13 @@ class SparseLinearNeq_add2(nn.Module):
         ) = self.neuron_truth_tables[index]
         _, input_bitwidth = self.input_quant.get_scale_factor_bits()
         _, output_bitwidth = self.output_quant.get_scale_factor_bits()
-        cat_input_bitwidth = (len(indices)//self.ensemble) * input_bitwidth
+        cat_input_bitwidth = (len(indices)//self.A) * input_bitwidth
         lut_string = ""
         num_entries = input_perm_matrix.shape[0]
-        if ensemble_idx == 0:
+        if A_idx == 0:
             for i in range(num_entries):
                 entry_str = ""
-                for idx in range(len(indices)//self.ensemble):
+                for idx in range(len(indices)//self.A):
                     val = input_perm_matrix[i, idx]
                     entry_str += self.input_quant.get_bin_str(val)
                 res_str = self.output_quant.get_bin_str(bin_output_states_1[i])
@@ -592,10 +591,10 @@ class SparseLinearNeq_add2(nn.Module):
             return generate_lut_verilog(
                 module_name, int(cat_input_bitwidth), int(output_bitwidth), lut_string
             )
-        elif ensemble_idx == 1:
+        elif A_idx == 1:
             for i in range(num_entries):
                 entry_str = ""
-                for idx in range(len(indices)//self.ensemble):
+                for idx in range(len(indices)//self.A):
                     val = input_perm_matrix[i, idx]
                     entry_str += self.input_quant.get_bin_str(val)
                 res_str = self.output_quant.get_bin_str(bin_output_states_2[i])
