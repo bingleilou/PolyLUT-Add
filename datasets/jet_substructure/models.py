@@ -1,6 +1,6 @@
-#  This file is part of PolyLUT.
+#  This file is part of PolyLUT-Add.
 #
-#  PolyLUT is a derivative work based on LogicNets,
+#  PolyLUT-Add is a derivative work based on PolyLUT,
 #  which is licensed under the Apache License 2.0.
 
 #  Copyright (C) 2021 Xilinx, Inc
@@ -117,7 +117,7 @@ class JetSubstructureNeqModel_add2(nn.Module):
                 layer_list.append(layer)
                 adder = Adder2(
                     out_features,
-                    ensemble=2,
+                    A=2,
                     input_quant=layer_list[-1].output_quant,
                     output_quant=output_quant_adder,
                     apply_input_quant=False,
@@ -172,7 +172,7 @@ class JetSubstructureNeqModel_add2(nn.Module):
                 layer_list.append(layer)
                 adder = Adder2(
                     out_features,
-                    ensemble=2,
+                    A=2,
                     input_quant=layer_list[-1].output_quant,
                     output_quant=output_quant_adder,
                     apply_input_quant=False,
@@ -224,7 +224,7 @@ class JetSubstructureNeqModel_add2(nn.Module):
                 layer_list.append(layer)
                 adder = Adder2(
                     out_features,
-                    ensemble=2,
+                    A=2,
                     input_quant=layer_list[-1].output_quant,
                     output_quant=output_quant_adder,
                     apply_input_quant=False,
