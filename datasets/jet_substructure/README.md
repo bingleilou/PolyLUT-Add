@@ -20,4 +20,4 @@ python neq2lut.py --arch jsc-m-lite-add2 --checkpoint ./test_fan_2_mlite_add2/be
 
 During the Vivado synthesis step, we offer two pipeline methods as examples located in ./pipeline-example for reproducibility purposes in the FPL24 submission. One can manually adjust them according to the provided examples temporarily.
 
-Note: The "Summary Metrics" results in wandb are sometimes incorrect, one could select a specfic chart (e.g. test chart) and then "add to report" -> "add panel" -> "Run Comparer" for correct values.
+Note: The "Summary Metrics" results in wandb are sometimes incorrect, one could refresh the webpage or select a specfic chart (e.g. test chart) and then "add to report" -> "add panel" -> "Run Comparer" for correct values.
