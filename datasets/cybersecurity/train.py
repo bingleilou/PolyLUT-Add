@@ -48,7 +48,7 @@ configs = {
         "learning_rate": 1e-1,
         "seed": 1697,
         "checkpoint": None,
-    }
+    },
     "nid-add2": {
         "hidden_layers": [100, 100, 100, 50],
         "input_bitwidth": 1,
