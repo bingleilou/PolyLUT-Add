@@ -50,7 +50,7 @@ configs = {
         "checkpoint": None,
     },
     "nid-add2": {
-        "hidden_layers": [100, 100, 100, 50],
+        "hidden_layers": [100, 100, 50, 50],
         "input_bitwidth": 1,
         "hidden_bitwidth": 2,
         "output_bitwidth": 2,
