@@ -1,5 +1,5 @@
 # PolyLUT-Add
-PolyLUT-Add is a technique that enhances neuron connectivity by combining multiple base PolyLUT models to improve accuracy. Moreover, we describe a novel architecture to improve its scalability.
+PolyLUT-Add is a technique that enhances neuron connectivity by combining multiple base PolyLUT models to improve accuracy.
 This project is a derivative work based on PolyLUT (https://github.com/MartaAndronic/PolyLUT) which is licensed under the Apache License 2.0.
 
 We provide this code for reproducibility purposes; the toolflow is inherited from PolyLUT work.
