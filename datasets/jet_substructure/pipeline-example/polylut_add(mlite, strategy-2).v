@@ -1,4 +1,4 @@
-module polylut (input [47:0] M0, input clk, input rst, output[14:0] M6);
+module polylut_add (input [47:0] M0, input clk, input rst, output[14:0] M6);
 wire [47:0] M0w;
 myreg #(.DataWidth(48)) layer0_reg (.data_in(M0), .clk(clk), .rst(rst), .data_out(M0w));
 wire [511:0] M1;
