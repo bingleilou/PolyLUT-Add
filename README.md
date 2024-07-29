@@ -74,3 +74,21 @@ If you think this work is useful to your project, please cite the paper: https:/
       primaryClass={cs.LG}
 }
 ```
+
+The updated post-Place&Route results for Table III in this paper are as follows.
+
+When citing this data, we recommend using these post-Place&Route results for a more consistent comparison with other methods (e.g., PolyLUT and LogicNets).
+
+| Dataset                                 | Model                        | Acc.  | LUT | FF     | DSP | BRAM | F_max(MHz) | Latency(ns) | 
+|-----------------------------------------|------------------------------|--|--|--|--|--|---|--|
+| **MNIST** (post systhesis)              | PolyLUT-Add (HDR-Add2, $D$=3)        | 96%  | 15272 | 2880 | 0 | 0  | 833 | 7  |
+| **MNIST** (post Place&Route)            | PolyLUT-Add (HDR-Add2, $D$=3)        | 96%  | 14810 | 2609 | 0 | 0  | 625 | 10 |
+| **JSC-HC** (post systhesis)             | PolyLUT-Add (JSC-XL-Add2, $D$=3)     | 75%  | 47639 | 1712 | 0 | 0  | 400 | 13 |
+| **JSC-HC** (post Place&Route)           | PolyLUT-Add (JSC-XL-Add2, $D$=3)     | 75%  | 36484 | 1209 | 0 | 0  | 315 | 16 |
+| **JSC-LC** (post systhesis)             | PolyLUT-Add (JSC-M Lite-Add2, $D$=3) | 72%  | 1618  | 336  | 0 | 0  | 800 | 4  |
+| **JSC-LC** (post Place&Route)           | PolyLUT-Add (JSC-M Lite-Add2, $D$=3) | 72%  | 895   | 189  | 0 | 0  | 750 | 4  |
+| **UNSW-NB15** (post systhesis)          | PolyLUT-Add (NID-Add2, $D$=1)        | 92%  | 2591  | 1193 | 0 | 0  | 620 | 8  |
+| **UNSW-NB15** (post Place&Route)        | PolyLUT-Add (NID-Add2, $D$=1)        | 92%  | 1649  | 830  | 0 | 0  | 620 | 8  |
+
+
+
